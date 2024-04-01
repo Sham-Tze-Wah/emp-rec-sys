@@ -1,0 +1,36 @@
+import {EmployeeModel} from '../employee-list/employee-list.model';
+export const EMPLOYEES: EmployeeModel[] = [
+    {
+        username: "omer",
+        id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+        email: "omer@yopmail.com",
+        dob: "1984-07-03T00:00:00+08:00",
+        gender: "MALE",
+        position: "MANAGER",
+        address: "Jalan Berhala Palm Court",
+        empid: "1212",
+        hobbies: ["ARCHERY", "BOXING", "GYM"],
+      },
+      {
+        username: "kareena",
+        id: "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+        email: "kareena@yopmail.com",
+        dob: "1990-11-15T00:00:00+08:00",
+        gender: "FEMALE",
+        position: "DEVELOPER",
+        address: "52000 Vijaywada....",
+        empid: "3131",
+        hobbies: ["READING", "ARCHERY"],
+      },
+      {
+        username: "bobbydarling",
+        id: "6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b",
+        email: "bobby@yopmail.com",
+        dob: "1993-01-24T00:00:00+08:00",
+        gender: "OTHERS",
+        position: "TESTER",
+        address: "Booohahaha Jalan Pesar",
+        empid: "9191",
+        hobbies: ["READING"],
+      },    
+]
