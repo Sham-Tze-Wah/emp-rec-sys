@@ -25,14 +25,17 @@ export class EmployeeListComponent implements OnInit{
   genders: MasterDataModel[] = GENDERS;
 
   selectedColorTheme: number = 0;
+  title = '';
   colorTheme = [
     {
       theme: 'bg-success',
-      btnTheme: 'btn-success'
+      btnTheme: 'btn-success',
+      text: 'text-white'
     },
     {
       theme: 'bg-primary',
-      btnTheme: 'btn-primary'
+      btnTheme: 'btn-primary',
+      text: 'text-white'
     }
   ]
   constructor(
@@ -92,11 +95,7 @@ export class EmployeeListComponent implements OnInit{
       }
     }
     else{
-      swal.fire(
-        'error',
-        `Something wrong happened!`,
-        'error'
-      );
+      this.toastrService.error('Something went wrong in checkbox.', 'error');
     } 
   }
 
@@ -105,20 +104,21 @@ export class EmployeeListComponent implements OnInit{
   }
 
   openModalCenter(modalCenter: TemplateRef<any>, title : string, selectedColorTheme: number) {
+    this.title = title;
     this.selectedColorTheme = selectedColorTheme;
-    this.modalService.open(modalCenter, {centered: true, ariaLabelledBy: title});
+    this.modalService.open(modalCenter, {centered: true, ariaLabelledBy: title, size: 'lg'});
   }
 
   saveEmployee(modal: TemplateRef<any>){
     this.closeModal(modal);
-    swal.fire(
-      'Success',
-      `Successful!`,
-      'success'
-    );
+    this.toastrService.success('Successful!', 'success');
   }
 
   closeModal(modal: TemplateRef<any>){
     this.modalService.dismissAll();
+  }
+
+  setPosition(position: string){
+    this.employee.position = position;
   }
 }

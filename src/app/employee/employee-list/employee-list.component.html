@@ -19,11 +19,11 @@
             <tbody>
               <tr scope = "row" *ngFor="let employee of employees">
                 <td width="250px;">
-                  <button class="btn btn-primary" type="button" (onclick)="openModalCenter(modalCenter, 'New Form', 0)">
+                  <button class="btn btn-primary" type="button" (click)="openModalCenter(modalCenter, 'New Form', 0)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>              
                   </button>
                   <span>&nbsp;&nbsp;</span>
-                  <button class="btn btn-danger" type="button" (onclick)="openModalCenter(modalCenter, 'Edit Form', 1)">
+                  <button class="btn btn-danger" type="button" (click)="openModalCenter(modalCenter, 'Edit Form', 1)">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
                 </td>
@@ -38,9 +38,9 @@
           </table>
     </div>
     <ng-template #modalCenter let-modal>
-        <div class="modal-header" [ngClass]="[colorTheme]">
-            <h5 class="modal-title" id="exampleModalLabel">{{modal.arialabel}}</h5>
-            <button type="button" class="close" data-dismiss="modal" (click)="modal.dismiss('Cross click')" aria-label="Close">
+        <div class="modal-header" [ngClass]="[colorTheme[0].theme, colorTheme[0].text]">
+            <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+            <button [ngClass]="[colorTheme[0].btnTheme]" type="button" class="close" data-dismiss="modal" (click)="modal.dismiss('Cross click')" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -90,12 +90,12 @@
                     id="dateOfBirth"
                     class="form-control"
                     placeholder="yyyy-mm-dd"
-                    name="dp"
+                    name="dateOfBirth"
                     ngbDatepicker
-                    #dp="ngbDatepicker"
+                    #dateOfBirth="ngbDatepicker"
                     [(ngModel)]="employee.dob"
                   />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dateOfBirth.toggle()" type="button"></button>
                 </div>
                 <!-- <span class="mandatory" *ngIf="true">*&nbsp;</span> -->
                 <!-- <label for="dob" class="col-form-label">Date Of Birth</label>
@@ -134,11 +134,11 @@
                 <span class="mandatory" *ngIf="true">*&nbsp;</span>
                 <label for="position" class="col-form-label">Position</label>
                 <div ngbDropdown class="d-inline-block">
-                  <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                  <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" name="position" ngbDropdownToggle>
                     {{employee.position == null ? "" : employee.position}}
                   </button>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngFor="let position of positions">
-                    <button ngbDropdownItem [(ngModel)]="employee.position">{{position.value}}</button>
+                    <button ngbDropdownItem (click)="setPosition(position.value!!)">{{position.value}}</button>
                   </div>
                 </div>
               </div>
@@ -180,8 +180,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn" (click)="saveEmployee(modalCenter)" [ngClass]="[colorTheme]"
-            >Save <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+            <button type="button" class="btn" (click)="saveEmployee(modalCenter)" [ngClass]="[colorTheme[0].btnTheme]"
+            >Save
             </button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#modalCenter" (click)="modal.close('Close click')">Cancel</button>
           </div>
