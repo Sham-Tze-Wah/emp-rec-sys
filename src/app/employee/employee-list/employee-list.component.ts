@@ -103,10 +103,15 @@ export class EmployeeListComponent implements OnInit{
     return this.hobbies.length > 0 ? true : false;
   }
 
-  openModalCenter(modalCenter: TemplateRef<any>, title : string, selectedColorTheme: number) {
+  openModalCenter(modalCenter: TemplateRef<any>, title : string, selectedColorTheme: number, employee?: EmployeeModel) {
     this.title = title;
     this.selectedColorTheme = selectedColorTheme;
+    this.setEmployee(employee!!);
     this.modalService.open(modalCenter, {centered: true, ariaLabelledBy: title, size: 'lg'});
+  }
+
+  setEmployee(employee: EmployeeModel){
+    this.employee = employee;
   }
 
   saveEmployee(modal: TemplateRef<any>){
@@ -120,5 +125,22 @@ export class EmployeeListComponent implements OnInit{
 
   setPosition(position: string){
     this.employee.position = position;
+  }
+
+  deleteEmployee(employee: EmployeeModel){
+    swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.employees = this.employees.filter(item => item !== employee);
+        this.toastrService.success('Successful!', 'success');
+      }
+    })
   }
 }

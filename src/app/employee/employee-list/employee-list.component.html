@@ -1,7 +1,7 @@
 <div class="bg-secondary bg-gradient" style="min-height: 100vh;">
     <div class="container-fluid d-flex justify-content-between bg-white p-3 border">
         <h3>Employee CRUD</h3>
-        <button class="btn btn-success" type="button">New</button>
+        <button class="btn btn-success" type="button" (click)="openModalCenter(modalCenter, 'New Form', 0, undefined)">New</button>
     </div>
     <div class="container bg-white p-4 mt-4 rounded mx-auto">
         <table class="table table-bordered">
@@ -19,11 +19,11 @@
             <tbody>
               <tr scope = "row" *ngFor="let employee of employees">
                 <td width="250px;">
-                  <button class="btn btn-primary" type="button" (click)="openModalCenter(modalCenter, 'New Form', 0)">
+                  <button class="btn btn-primary" type="button" (click)="openModalCenter(modalCenter, 'Edit Form', 1, employee)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>              
                   </button>
                   <span>&nbsp;&nbsp;</span>
-                  <button class="btn btn-danger" type="button" (click)="openModalCenter(modalCenter, 'Edit Form', 1)">
+                  <button class="btn btn-danger" type="button" (click)="deleteEmployee(employee)">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
                 </td>
@@ -38,9 +38,9 @@
           </table>
     </div>
     <ng-template #modalCenter let-modal>
-        <div class="modal-header" [ngClass]="[colorTheme[0].theme, colorTheme[0].text]">
+        <div class="modal-header" [ngClass]="[colorTheme[selectedColorTheme].theme, colorTheme[selectedColorTheme].text]">
             <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
-            <button [ngClass]="[colorTheme[0].btnTheme]" type="button" class="close" data-dismiss="modal" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <button [ngClass]="[colorTheme[selectedColorTheme].btnTheme]" type="button" class="close" data-dismiss="modal" (click)="modal.dismiss('Cross click')" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -117,18 +117,19 @@
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngFor="let position of positions">
                       <button ngbDropdownItem (click)="setPosition(position.value!!)">{{position.value}}</button>
                     </div> -->
-                    <div class="dropdown bg-white" style="min-width: 100%">
-                      <a class="btn btn-light border-gray dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{employee.position}}
+                    <div class="dropdown bg-white">
+                      <a class="btn btn-white dropdown-toggle form-control border border-grey" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{employee.position || "&nbsp;"}}
                       </a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                         <li *ngFor="let position of positions">
-                          <button class="border-0 w-100 bg-white" (click)="setPosition(position.value!!)">{{position.value}}</button>
+                          <button class="border-0 w-100 dropdown-item" (click)="setPosition(position.value!!)">{{position.value}}</button>
                         </li>
                       </ul>
                     </div>
                   <!-- </div> -->
                 </div>
+                <div class="form-group col pl-1"></div>
               </div>
               
               <div class="row">
@@ -136,7 +137,7 @@
                   <div class="col-form-label">
                     <!-- <span class="mandatory" *ngIf="true">*&nbsp;</span> -->
                     Gender</div>
-                  <div class="form-check" *ngFor="let gender of genders">
+                  <div class="form-check form-check-inline" *ngFor="let gender of genders">
                     <label class="form-check-label" for="gender_{{gender.id}}">
                       <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.value' type="radio" name="genders" [(ngModel)]="employee.gender" required>
                       {{gender.value}}
@@ -144,12 +145,12 @@
                   </div>
                 </div>
                 <div class="form-group col pl-1">
-                  <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
-                  <label for="hobbies" class="col-form-label">Hobbies</label>
-                  <div *ngFor="let hobby of hobbies">
-                    <div class="form-check form-check-inline">
+                  <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
+                  <div>
+                    <label for="hobbies" class="col-form-label block">Hobbies</label>
+                  </div>
+                  <div class="form-check form-check-inline" *ngFor="let hobby of hobbies">
                       <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.value" (change)="onChangeHobbies($event)" />{{hobby.value}}
-                    </div>
                   </div>
                   <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="error-messages">
                     Please select at least one country.
@@ -173,7 +174,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn" (click)="saveEmployee(modalCenter)" [ngClass]="[colorTheme[0].btnTheme]"
+            <button type="button" class="btn" (click)="saveEmployee(modalCenter)" [ngClass]="[colorTheme[selectedColorTheme].btnTheme]"
             >Save
             </button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#modalCenter" (click)="modal.close('Close click')">Cancel</button>
