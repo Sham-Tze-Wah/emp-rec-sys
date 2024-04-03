@@ -46,124 +46,117 @@
           </div>
           <div class="modal-body">
             <form ngNativeValidate #employeeForm="ngForm">
-              <div class="form-group col pl-1">
-                <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
-                <label for="username" class="col-form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" [(ngModel)]="employee.username" required minlength="2" #username="ngModel">
-                <div *ngIf="!username?.valid && (username?.dirty || username?.touched)" class="error">
-                  <div *ngIf="username.errors?.['required']" class="error-messages">
-                    Username is required
-                  </div>
-                  <div *ngIf="username.errors?.['minlength']" class="error-messages">
-                    Username Minimum Length is {{username.errors?.['minlength']?.requiredLength}}
-                  </div>
-                </div>
-              </div>
-              <div class="form-group col pl-1">
-                <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
-                <label for="empId" class="col-form-label">Emp ID</label>
-                <input type="text" class="form-control" id="empId" name="empId" pattern="[0-9]+" minlength="4"
-                  (keypress)="onlyNumber($event)" (paste)="onPastenumeric($event)" [(ngModel)]="employee.empid" #empId="ngModel" required>
-                <div *ngIf="!empId?.valid && (empId?.dirty || empId?.touched)" class="error">
-                  <div *ngIf="empId.errors?.['required']" class="error-messages">
-                    EmpId is required
-                  </div>
-                  <div *ngIf="empId.errors?.['minlength']" class="error-messages">
-                    EmpId Minimum Length is {{empId.errors?.['minlength']?.requiredLength}}
-                  </div>
-                </div>
-              </div>
-              <div class="form-group col pl-1">
-                <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
-                <label for="email" class="col-form-label">Email</label>
-                <input type="text" class="form-control" id="email" name="email" [(ngModel)]="employee.email" required email
-                #email="ngModel">
-                <div *ngIf="!email?.valid && (email?.dirty || email?.touched)" class="error">
-                  <div *ngIf="email.errors?.['required']" class="error-messages">Email is required</div>
-                  <div *ngIf="email.errors?.['email']" class="error-messages">Email is invalid</div>
-                </div>
-              </div>
-              <div class="form-group col pl-1">
-                <label for="dateOfBirth">Date of birth</label>
-                <div class="input-group">
-                  <input
-                    id="dateOfBirth"
-                    class="form-control"
-                    placeholder="yyyy-mm-dd"
-                    name="dateOfBirth"
-                    ngbDatepicker
-                    #dateOfBirth="ngbDatepicker"
-                    [(ngModel)]="employee.dob"
-                  />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dateOfBirth.toggle()" type="button"></button>
-                </div>
-                <!-- <span class="mandatory" *ngIf="true">*&nbsp;</span> -->
-                <!-- <label for="dob" class="col-form-label">Date Of Birth</label>
-                  <div class="input-group-prepend" [owlDateTimeTrigger]="dtDob">
-                    <input 
-                    type="text"
-                    name="dob"
-                    [(ngModel)]="content.dateOfBirth"
-                    style="background-color: white;"
-                    class="form-control"
-                    [owlDateTimeTrigger]="dtDob"
-                    [owlDateTime]="dtDob"
-                    [max]="maxDate"
-                    [min]="minDate"
-                    #selectedDob="ngModel"
-                    (selectionchange)="onChangeDob($event)"
-                    (ngModelChange)="onChangeDob($event)"
-                    readonly
-                  />
-                    <div class="input-group-text">
-                      <i class="fa fa-calendar"></i>
+              <div class="row">
+                <div class="form-group col pl-1">
+                  <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
+                  <label for="username" class="col-form-label">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" [(ngModel)]="employee.username" required minlength="2" #username="ngModel">
+                  <div *ngIf="!username?.valid && (username?.dirty || username?.touched)" class="error">
+                    <div *ngIf="username.errors?.['required']" class="error-messages">
+                      Username is required
+                    </div>
+                    <div *ngIf="username.errors?.['minlength']" class="error-messages">
+                      Username Minimum Length is {{username.errors?.['minlength']?.requiredLength}}
                     </div>
                   </div>
-                  <owl-date-time #dtDob></owl-date-time>
-                  <div *ngIf="selectedDob.invalid">
-                    Invalid Date Time Format. It should be like this: 2024-02-19 12:15PM
                 </div>
-                <div *ngIf="selectedDob.errors?.['owlDateTimeParse']">
-                  Invalid Owl Date Time Parse Error.
+
+                <div class="form-group col pl-1">
+                  <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
+                  <label for="empId" class="col-form-label">Emp ID</label>
+                  <input type="text" class="form-control" id="empId" name="empId" pattern="[0-9]+" minlength="4"
+                    (keypress)="onlyNumber($event)" (paste)="onPastenumeric($event)" [(ngModel)]="employee.empid" #empId="ngModel" required>
+                  <div *ngIf="!empId?.valid && (empId?.dirty || empId?.touched)" class="error">
+                    <div *ngIf="empId.errors?.['required']" class="error-messages">
+                      EmpId is required
+                    </div>
+                    <div *ngIf="empId.errors?.['minlength']" class="error-messages">
+                      EmpId Minimum Length is {{empId.errors?.['minlength']?.requiredLength}}
+                    </div>
+                  </div>
                 </div>
-                <div *ngIf="selectedDob.invalid && selectedDob.errors?.['owlDateTimeMax']">
-                  Date Time value must before {{maxDate  | date: 'medium'}}
-              </div> -->
-              </div>
-              <div class="form-group col pl-1">
-                <span class="mandatory" *ngIf="true">*&nbsp;</span>
-                <label for="position" class="col-form-label">Position</label>
-                <div ngbDropdown class="d-inline-block">
-                  <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" name="position" ngbDropdownToggle>
-                    {{employee.position == null ? "" : employee.position}}
-                  </button>
-                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngFor="let position of positions">
-                    <button ngbDropdownItem (click)="setPosition(position.value!!)">{{position.value}}</button>
+
+                <div class="form-group col pl-1">
+                  <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
+                  <label for="email" class="col-form-label">Email</label>
+                  <input type="text" class="form-control" id="email" name="email" [(ngModel)]="employee.email" required email
+                  #email="ngModel">
+                  <div *ngIf="!email?.valid && (email?.dirty || email?.touched)" class="error"> <!-- dirty = change value, touched = clicked-->
+                    <div *ngIf="email.errors?.['required']" class="error-messages">Email is required</div>
+                    <div *ngIf="email.errors?.['email']" class="error-messages">Email is invalid</div>
                   </div>
                 </div>
               </div>
-              <div class="form-group col pl-1">
-                <span class="mandatory" *ngIf="true">*&nbsp;</span>
-                <div class="col-form-label">Gender</div>
-                <div class="form-check" *ngFor="let gender of genders">
-                  <label class="form-check-label" for="gender_{{gender.id}}">
-                    <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.value' type="radio" name="genders" [(ngModel)]="employee.gender" required>
-                    {{gender.value}}
-                  </label>
-                </div>
-              </div>
-              <div class="form-group col pl-1">
-                <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
-                <label for="hobbies" class="col-form-label">Hobbies</label>
-                <div *ngFor="let hobby of hobbies">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.value" (change)="onChangeHobbies($event)" />{{hobby.value}}
+              
+              <div class="row">
+                <div class="form-group col pl-1">
+                  <label for="dateOfBirth" class="col-form-label">Date of birth</label>
+                  <div class="input-group">
+                    <input
+                      id="dateOfBirth"
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      name="dateOfBirth"
+                      ngbDatepicker
+                      #dateOfBirth="ngbDatepicker"
+                      [(ngModel)]="employee.dob"
+                    />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dateOfBirth.toggle()" type="button">
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
                   </div>
                 </div>
-                <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="error-messages">
-                  Please select at least one country.
+
+                <div class="form-group col pl-1">
+                  <!-- <span class="mandatory" *ngIf="true">*&nbsp;</span> -->
+                  <label for="position" class="col-form-label">Position</label>
+                  <!-- <div ngbDropdown class="d-inline-block"> -->
+                    <!-- <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" name="position" ngbDropdownToggle>
+                      {{employee.position == null ? "" : employee.position}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngFor="let position of positions">
+                      <button ngbDropdownItem (click)="setPosition(position.value!!)">{{position.value}}</button>
+                    </div> -->
+                    <div class="dropdown bg-white" style="min-width: 100%">
+                      <a class="btn btn-light border-gray dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{employee.position}}
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li *ngFor="let position of positions">
+                          <button class="border-0 w-100 bg-white" (click)="setPosition(position.value!!)">{{position.value}}</button>
+                        </li>
+                      </ul>
+                    </div>
+                  <!-- </div> -->
                 </div>
               </div>
+              
+              <div class="row">
+                <div class="form-group col pl-1">
+                  <div class="col-form-label">
+                    <!-- <span class="mandatory" *ngIf="true">*&nbsp;</span> -->
+                    Gender</div>
+                  <div class="form-check" *ngFor="let gender of genders">
+                    <label class="form-check-label" for="gender_{{gender.id}}">
+                      <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.value' type="radio" name="genders" [(ngModel)]="employee.gender" required>
+                      {{gender.value}}
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group col pl-1">
+                  <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span>
+                  <label for="hobbies" class="col-form-label">Hobbies</label>
+                  <div *ngFor="let hobby of hobbies">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.value" (change)="onChangeHobbies($event)" />{{hobby.value}}
+                    </div>
+                  </div>
+                  <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="error-messages">
+                    Please select at least one country.
+                  </div>
+                </div>
+              </div>
+              
               <div class="form-group col pl-1">
                 <label for="address" class="col-form-label">Address</label>
                 <textarea class="form-control" id="address" name="address" [(ngModel)]="employee.address"></textarea>

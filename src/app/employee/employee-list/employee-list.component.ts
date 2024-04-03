@@ -85,7 +85,7 @@ export class EmployeeListComponent implements OnInit{
 
   onChangeHobbies(event: any){
     if(event.target.checked){
-      this.hobbies.push(event.target.value);
+      this.employee.hobbies!!.push(event.target.value);
     }
     else if(this.hobbies.length > 0){
       for(let index = 0; index < this.employee.hobbies!!.length; index++ ){
