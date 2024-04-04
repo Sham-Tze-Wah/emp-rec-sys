@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
 import { EmployeeModel } from '../employee-list/employee-list.model';
 import {EMPLOYEES} from '../mock/mock-employee-list';
 import { MasterDataModel } from 'src/app/master-data/master-data.model';
@@ -7,6 +7,7 @@ import { default as swal } from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatePipe } from 'src/app/shared/custom-date.pipe';
+import {NgForm, NgModel} from '@angular/forms';
 
 @Component({
   selector: 'app-employee-list',
@@ -16,6 +17,8 @@ import { CustomDatePipe } from 'src/app/shared/custom-date.pipe';
 export class EmployeeListComponent implements OnInit{
 
   @Input() ntnChkboxErrorMsg : boolean = false;
+  @ViewChild("genderRef") genderRef?: NgModel;
+  @ViewChild("positionRef") positionRef?: NgModel;
 
   employees: EmployeeModel[] = EMPLOYEES;
   employee: EmployeeModel = {};
@@ -84,6 +87,7 @@ export class EmployeeListComponent implements OnInit{
   }
 
   onChangeHobbies(event: any){
+    this.ntnChkboxErrorMsg = true;
     if(event.target.checked){
       if(this.employee.hobbies === undefined){
         this.employee.hobbies = [];
@@ -103,7 +107,10 @@ export class EmployeeListComponent implements OnInit{
   }
 
   globalAtLeastOneChecked(){
-    return this.hobbies.length > 0 ? true : false;
+    if(this.employee.hobbies === undefined)
+      return false;
+    else
+      return this.employee.hobbies.length > 0 ? true : false;
   }
 
   openModalCenter(modalCenter: TemplateRef<any>, title : string, selectedColorTheme: number, employee?: EmployeeModel) {
@@ -119,7 +126,11 @@ export class EmployeeListComponent implements OnInit{
     this.employee = employee;
   }
 
-  saveEmployee(modal: TemplateRef<any>, saveOrUpdate : number){
+  saveEmployee(modal: TemplateRef<any>, saveOrUpdate : number, form: NgForm){
+    if(form.invalid){
+      console.log(this.employee);
+      return; 
+    }
     console.log(this.employee);
     if(saveOrUpdate === 0){
       this.employees.push(this.employee);
@@ -146,13 +157,13 @@ export class EmployeeListComponent implements OnInit{
 
   deleteEmployee(employee: EmployeeModel){
     swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
+      // title: 'Are you sure?',
+      title: `Do you want to delete information of ${employee.username}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'OK'
     }).then((result) => {
       if (result.isConfirmed) {
         this.employees = this.employees.filter(item => item !== employee);
