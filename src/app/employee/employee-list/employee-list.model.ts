@@ -3,7 +3,7 @@ export interface EmployeeModel
     username?: string;
     id?: string;
     email?: string;
-    dob?: string;
+    dob?: any;
     gender?: string;
     position?: string;
     address?: string;

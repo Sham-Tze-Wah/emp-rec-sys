@@ -6,7 +6,7 @@ import { POSITIONS, HOBBIES, GENDERS } from '../mock/mock-master-data';
 import { default as swal } from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
+import { CustomDatePipe } from 'src/app/shared/custom-date.pipe';
 
 @Component({
   selector: 'app-employee-list',
@@ -85,6 +85,9 @@ export class EmployeeListComponent implements OnInit{
 
   onChangeHobbies(event: any){
     if(event.target.checked){
+      if(this.employee.hobbies === undefined){
+        this.employee.hobbies = [];
+      }
       this.employee.hobbies!!.push(event.target.value);
     }
     else if(this.hobbies.length > 0){
@@ -104,9 +107,11 @@ export class EmployeeListComponent implements OnInit{
   }
 
   openModalCenter(modalCenter: TemplateRef<any>, title : string, selectedColorTheme: number, employee?: EmployeeModel) {
+    this.employee = {};
     this.title = title;
     this.selectedColorTheme = selectedColorTheme;
-    this.setEmployee(employee!!);
+    if(employee !== undefined)
+      this.setEmployee(employee!!);
     this.modalService.open(modalCenter, {centered: true, ariaLabelledBy: title, size: 'lg'});
   }
 
@@ -114,7 +119,19 @@ export class EmployeeListComponent implements OnInit{
     this.employee = employee;
   }
 
-  saveEmployee(modal: TemplateRef<any>){
+  saveEmployee(modal: TemplateRef<any>, saveOrUpdate : number){
+    console.log(this.employee);
+    if(saveOrUpdate === 0){
+      this.employees.push(this.employee);
+    }
+    else{
+      const employeeFound = this.employees.map(emp => {
+        if(emp.empid === this.employee.empid){
+          return this.employee;
+        }
+        return emp;
+      })
+    }
     this.closeModal(modal);
     this.toastrService.success('Successful!', 'success');
   }
@@ -142,5 +159,10 @@ export class EmployeeListComponent implements OnInit{
         this.toastrService.success('Successful!', 'success');
       }
     })
+  }
+
+  formatDate(event:any){
+    console.log(event);
+    CustomDatePipe.transform(event);
   }
 }

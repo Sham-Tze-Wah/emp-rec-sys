@@ -50,13 +50,14 @@
                 <div class="form-group col pl-1">
                   <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
                   <label for="username" class="col-form-label">Username</label>
-                  <input type="text" class="form-control" id="username" name="username" [(ngModel)]="employee.username" required minlength="2" #username="ngModel">
-                  <div *ngIf="!username?.valid && (username?.dirty || username?.touched)" class="error">
-                    <div *ngIf="username.errors?.['required']" class="error-messages">
+                  <input type="text" class="form-control" id="username" name="username" 
+                  [(ngModel)]="employee.username" required minlength="2" #usernameRef="ngModel">
+                  <div *ngIf="!usernameRef?.valid && (usernameRef?.dirty || usernameRef?.touched)" class="error">
+                    <div *ngIf="usernameRef.errors?.['required']" class="error-messages invalid-feedback">
                       Username is required
                     </div>
-                    <div *ngIf="username.errors?.['minlength']" class="error-messages">
-                      Username Minimum Length is {{username.errors?.['minlength']?.requiredLength}}
+                    <div *ngIf="usernameRef.errors?.['minlength']" class="error-messages invalid-feedback">
+                      Username Minimum Length is {{usernameRef.errors?.['minlength']?.requiredLength}}
                     </div>
                   </div>
                 </div>
@@ -70,7 +71,7 @@
                     <div *ngIf="empId.errors?.['required']" class="error-messages">
                       EmpId is required
                     </div>
-                    <div *ngIf="empId.errors?.['minlength']" class="error-messages">
+                    <div *ngIf="empId.errors?.['minlength']" class="error-messages invalid-feedback">
                       EmpId Minimum Length is {{empId.errors?.['minlength']?.requiredLength}}
                     </div>
                   </div>
@@ -82,8 +83,8 @@
                   <input type="text" class="form-control" id="email" name="email" [(ngModel)]="employee.email" required email
                   #email="ngModel">
                   <div *ngIf="!email?.valid && (email?.dirty || email?.touched)" class="error"> <!-- dirty = change value, touched = clicked-->
-                    <div *ngIf="email.errors?.['required']" class="error-messages">Email is required</div>
-                    <div *ngIf="email.errors?.['email']" class="error-messages">Email is invalid</div>
+                    <div *ngIf="email.errors?.['required']" class="error-messages invalid-feedback">Email is required</div>
+                    <div *ngIf="email.errors?.['email']" class="error-messages invalid-feedback">Email is invalid</div>
                   </div>
                 </div>
               </div>
@@ -92,7 +93,12 @@
                 <div class="form-group col pl-1">
                   <label for="dateOfBirth" class="col-form-label">Date of birth</label>
                   <div class="input-group">
-                    <input
+                    <input id="dateOfBirth" class="form-control" type="date"
+                    name="dateOfBirth"
+                    [value]="employee.dob"
+                    (ngModelChange)="employee.dob = $event"
+                    [ngModel]="employee.dob | date:'yyyy-MM-dd'" />
+                    <!-- <input
                       id="dateOfBirth"
                       class="form-control"
                       placeholder="yyyy-mm-dd"
@@ -100,10 +106,12 @@
                       ngbDatepicker
                       #dateOfBirth="ngbDatepicker"
                       [(ngModel)]="employee.dob"
+                      [value]="employee.dob!!"
+                      (ngModelChange)="employee.dob!!"
                     />
                     <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dateOfBirth.toggle()" type="button">
-                      <i class="fa fa-calendar" aria-hidden="true"></i>
-                    </button>
+                      <i class="fa fa-calendar" aria-hidden="true"></i>{{employee.dob}}
+                    </button> -->
                   </div>
                 </div>
 
@@ -139,7 +147,7 @@
                     Gender</div>
                   <div class="form-check form-check-inline" *ngFor="let gender of genders">
                     <label class="form-check-label" for="gender_{{gender.id}}">
-                      <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.value' type="radio" name="genders" [(ngModel)]="employee.gender" required>
+                      <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.id' type="radio" name="gender_{{gender.id}}" [(ngModel)]="employee.gender" [checked]="(employee.gender | uppercase) === gender.id ? true : false" required>
                       {{gender.value}}
                     </label>
                   </div>
@@ -150,9 +158,9 @@
                     <label for="hobbies" class="col-form-label block">Hobbies</label>
                   </div>
                   <div class="form-check form-check-inline" *ngFor="let hobby of hobbies">
-                      <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.value" (change)="onChangeHobbies($event)" />{{hobby.value}}
+                      <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.id" (change)="onChangeHobbies($event)" [checked]="employee.hobbies !== undefined && employee.hobbies!!.includes(hobby.id!!) ? true : false"/>{{hobby.value}}
                   </div>
-                  <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="error-messages">
+                  <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="error-messages invalid-feedback">
                     Please select at least one country.
                   </div>
                 </div>
@@ -174,7 +182,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn" (click)="saveEmployee(modalCenter)" [ngClass]="[colorTheme[selectedColorTheme].btnTheme]"
+            <button type="button" class="btn" (click)="saveEmployee(modalCenter, selectedColorTheme)" [ngClass]="[colorTheme[selectedColorTheme].btnTheme]"
             >Save
             </button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#modalCenter" (click)="modal.close('Close click')">Cancel</button>

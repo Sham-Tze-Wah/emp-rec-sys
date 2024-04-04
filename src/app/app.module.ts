@@ -7,11 +7,13 @@ import { EmployeeListComponent } from './employee/employee-list/employee-list.co
 import { NgbModule, NgbDatepickerModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { CustomDatePipe } from './shared/custom-date.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    CustomDatePipe
   ],
   imports: [
     BrowserModule,
