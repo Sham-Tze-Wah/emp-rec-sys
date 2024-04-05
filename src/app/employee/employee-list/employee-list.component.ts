@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { EmployeeModel } from '../employee-list/employee-list.model';
 import {EMPLOYEES} from '../mock/mock-employee-list';
 import { MasterDataModel } from 'src/app/master-data/master-data.model';
@@ -14,11 +14,12 @@ import {NgForm, NgModel} from '@angular/forms';
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit{
+export class EmployeeListComponent implements OnInit, AfterViewInit{
 
   @Input() ntnChkboxErrorMsg : boolean = false;
-  @ViewChild("genderRef") genderRef?: NgModel;
+  @Input() radioButtonDirtyTouched: boolean = false;
   @ViewChild("positionRef") positionRef?: NgModel;
+  @ViewChild('genderRadio') genderRadio?: NgModel;
 
   employees: EmployeeModel[] = EMPLOYEES;
   employee: EmployeeModel = {};
@@ -50,6 +51,10 @@ export class EmployeeListComponent implements OnInit{
 
   ngOnInit(): void {
     
+  }
+
+  ngAfterViewInit() {
+    console.log(this.genderRadio); // Check if the query returns a valid reference
   }
 
   onlyNumber(event: any){
@@ -128,7 +133,15 @@ export class EmployeeListComponent implements OnInit{
 
   saveEmployee(modal: TemplateRef<any>, saveOrUpdate : number, form: NgForm){
     if(form.invalid){
-      console.log(this.employee);
+      console.log(this.genderRadio);
+      Object.values(form.controls).forEach(control => {
+        if(control.value===null || control.value === undefined){
+          control.markAsDirty();
+          control.markAsTouched();
+        }
+      })
+      this.radioButtonDirtyTouched = true;
+      this.ntnChkboxErrorMsg = true;
       return; 
     }
     console.log(this.employee);
@@ -175,5 +188,13 @@ export class EmployeeListComponent implements OnInit{
   formatDate(event:any){
     console.log(event);
     CustomDatePipe.transform(event);
+  }
+
+  checkDirtyTouchedAndValidity(ngModelRef?: NgModel){
+    return !ngModelRef?.valid && (ngModelRef?.dirty || ngModelRef?.touched) && ngModelRef?.errors?.['required'];
+  }  
+
+  checkEmptyValue(ngModelRef?: NgModel){
+    return ngModelRef?.value === null || ngModelRef?.value === undefined || ngModelRef?.value === '';
   }
 }
