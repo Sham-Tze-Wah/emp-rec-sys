@@ -55,7 +55,8 @@
             <label for="username" class="col-form-label">Username</label>
             <input type="text" 
             class="form-control" 
-            [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(usernameRef) && checkEmptyValue(usernameRef)}"
+            [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(usernameRef) && checkEmptyValue(usernameRef),
+          'is-valid': checkDirtyTouchedAndValidity(usernameRef) && !checkEmptyValue(usernameRef)}"
             id="username" 
             name="username" 
             [(ngModel)]="employee.username"
@@ -75,7 +76,8 @@
             <label for="empId" class="col-form-label">Emp ID</label>
             <input type="text" class="form-control" id="empId" name="empId" pattern="[0-9]+" minlength="4"
               (keypress)="onlyNumber($event)" (paste)="onPastenumeric($event)" [(ngModel)]="employee.empid"
-              #empId="ngModel" required [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(empId) && checkEmptyValue(empId)}">
+              #empId="ngModel" required [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(empId) && checkEmptyValue(empId),
+              'is-valid': checkDirtyTouchedAndValidity(empId) && !checkEmptyValue(empId)}">
             <div *ngIf="!empId?.valid && (empId?.dirty || empId?.touched)" class="error">
               <div *ngIf="empId.errors?.['required']" class="invalid-feedback d-block">
                 EmpId is required
@@ -90,7 +92,8 @@
             <!-- <span class="mandatory col-form-label" *ngIf="true">*&nbsp;</span> -->
             <label for="email" class="col-form-label">Email</label>
             <input type="text" class="form-control" id="email" name="email" [(ngModel)]="employee.email" required email
-              #email="ngModel" [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(email) && checkEmptyValue(email)}">
+              #email="ngModel" [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(email) && checkEmptyValue(email),
+              'is-valid': checkDirtyTouchedAndValidity(email) && !checkEmptyValue(email)}">
             <div *ngIf="!email?.valid && (email?.dirty || email?.touched)" class="error">
               <!-- dirty = change value, touched = clicked-->
               <div *ngIf="email.errors?.['required']" class="invalid-feedback d-block">Email is required</div>
@@ -105,7 +108,8 @@
             <div class="input-group">
               <input id="dateOfBirth" class="form-control" type="date" name="dateOfBirth" [value]="employee.dob"
                 (ngModelChange)="employee.dob = $event" [ngModel]="employee.dob | date:'yyyy-MM-dd'"
-                #dateOfBirth="ngModel" [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(dateOfBirth) && checkEmptyValue(dateOfBirth)}" required/>
+                #dateOfBirth="ngModel" [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(dateOfBirth) && checkEmptyValue(dateOfBirth),
+                'is-valid': checkDirtyTouchedAndValidity(dateOfBirth) && !checkEmptyValue(dateOfBirth)}" required/>
               <!-- <input
                       id="dateOfBirth"
                       class="form-control"
@@ -140,7 +144,8 @@
                       <button ngbDropdownItem (click)="setPosition(position.value!!)">{{position.value}}</button>
                     </div> -->
               <select class="form-select" id="inputGroupSelect01" name="position" [(ngModel)]="employee.position" #positionRef="ngModel" required
-              [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(positionRef) && checkEmptyValue(positionRef)}"
+              [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(positionRef) && checkEmptyValue(positionRef),
+              'is-valid': checkDirtyTouchedAndValidity(positionRef) && !checkEmptyValue(positionRef)}"
               >
                   <!-- <option selected disable>&nbsp;</option> -->
                   <option [value]="position.id" [selected]="position.id===employee.position"  *ngFor="let position of positions">{{position.value}}</option>
@@ -173,14 +178,15 @@
                 <input class="form-check-input" id="gender_{{gender.id}}" [value]='gender.id' type="radio"
                   name="gender_{{gender.id}}" [(ngModel)]="employee.gender"
                   [checked]="(employee.gender | uppercase) === gender.id ? true : false" required
-                  [ngClass] = "{'is-invalid':radioButtonDirtyTouched && (this.employee.gender === null || this.employee.gender === undefined)}"
-                  (change)="radioButtonDirtyTouched = true"
+                  [ngClass] = "{'is-invalid':genderRadioDirtyTouched && (this.employee.gender === null || this.employee.gender === undefined),
+                  'is-valid': genderRadioDirtyTouched && this.employee.gender !== null && this.employee.gender !== undefined}"
+                  (change)="genderRadioDirtyTouched = true"
                   #genderRadio="ngModel"
                   >
                 {{gender.value}}
               </label>
             </div>
-            <div *ngIf="(this.employee.gender === null || this.employee.gender === undefined) && radioButtonDirtyTouched" class="error invalid-feedback d-block">
+            <div *ngIf="(this.employee.gender === null || this.employee.gender === undefined) && genderRadioDirtyTouched" class="error invalid-feedback d-block">
                 Gender is required
             </div>
           </div>
@@ -193,10 +199,11 @@
               <input class="form-check-input" type="checkbox" name="hobbies" [value]="hobby.id"
                 (change)="onChangeHobbies($event)"
                 [checked]="employee.hobbies !== undefined && employee.hobbies!!.includes(hobby.id!!) ? true : false" 
-                [ngClass] = "{'is-invalid':ntnChkboxErrorMsg && (this.employee.hobbies === null || this.employee.hobbies === undefined || this.employee.hobbies.length <= 0)}"
+                [ngClass] = "{'is-invalid':hobbyChkboxDirtyTouched && (this.employee.hobbies === null || this.employee.hobbies === undefined || this.employee.hobbies.length <= 0),
+              'is-valid': hobbyChkboxDirtyTouched && this.employee.hobbies !== null && this.employee.hobbies !== undefined && this.employee.hobbies.length > 0}"
                 />{{hobby.value}}
             </div>
-            <div *ngIf="!globalAtLeastOneChecked() && ntnChkboxErrorMsg" class="invalid-feedback d-block">
+            <div *ngIf="!globalAtLeastOneChecked() && hobbyChkboxDirtyTouched" class="invalid-feedback d-block">
               Please select at least one hobby.
             </div>
           </div>
@@ -205,7 +212,8 @@
         <div class="form-group col pl-1">
           <label for="address" class="col-form-label">Address</label>
           <textarea class="form-control" id="address" name="address" [(ngModel)]="employee.address"
-            #addressRef="ngModel" required [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(addressRef) && checkEmptyValue(addressRef)}"></textarea>
+            #addressRef="ngModel" required [ngClass] = "{'is-invalid':checkDirtyTouchedAndValidity(addressRef) && checkEmptyValue(addressRef),
+          'is-valid': checkDirtyTouchedAndValidity(addressRef) && !checkEmptyValue(addressRef)}"></textarea>
           <div *ngIf="(addressRef?.dirty || addressRef?.touched)">
             <div *ngIf="!addressRef?.valid && addressRef.errors?.['required']" class="invalid-feedback d-block">
               Address is required

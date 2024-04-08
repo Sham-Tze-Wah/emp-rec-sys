@@ -16,8 +16,8 @@ import {NgForm, NgModel} from '@angular/forms';
 })
 export class EmployeeListComponent implements OnInit, AfterViewInit{
 
-  @Input() ntnChkboxErrorMsg : boolean = false;
-  @Input() radioButtonDirtyTouched: boolean = false;
+  @Input() hobbyChkboxDirtyTouched : boolean = false;
+  @Input() genderRadioDirtyTouched: boolean = false;
   @ViewChild("positionRef") positionRef?: NgModel;
   @ViewChild('genderRadio') genderRadio?: NgModel;
 
@@ -54,7 +54,6 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    console.log(this.genderRadio); // Check if the query returns a valid reference
   }
 
   onlyNumber(event: any){
@@ -92,7 +91,7 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
   }
 
   onChangeHobbies(event: any){
-    this.ntnChkboxErrorMsg = true;
+    this.hobbyChkboxDirtyTouched = true;
     if(event.target.checked){
       if(this.employee.hobbies === undefined){
         this.employee.hobbies = [];
@@ -140,8 +139,8 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
           control.markAsTouched();
         }
       })
-      this.radioButtonDirtyTouched = true;
-      this.ntnChkboxErrorMsg = true;
+      this.genderRadioDirtyTouched = true;
+      this.hobbyChkboxDirtyTouched = true;
       return; 
     }
     console.log(this.employee);
@@ -190,11 +189,12 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
     CustomDatePipe.transform(event);
   }
 
-  checkDirtyTouchedAndValidity(ngModelRef?: NgModel){
-    return !ngModelRef?.valid && (ngModelRef?.dirty || ngModelRef?.touched) && ngModelRef?.errors?.['required'];
+  checkDirtyTouchedAndValidity(ngModelRef: NgModel){
+    return (ngModelRef!!.dirty || ngModelRef!!.touched);
   }  
 
   checkEmptyValue(ngModelRef?: NgModel){
-    return ngModelRef?.value === null || ngModelRef?.value === undefined || ngModelRef?.value === '';
+    return ngModelRef!!.invalid;
+    // return ngModelRef?.value === null || ngModelRef?.value === undefined || ngModelRef?.value === '';
   }
 }
