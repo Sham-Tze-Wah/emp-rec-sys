@@ -143,7 +143,11 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
       this.hobbyChkboxDirtyTouched = true;
       return; 
     }
+
     console.log(this.employee);
+
+    this.genderRadioDirtyTouched = true;
+    this.hobbyChkboxDirtyTouched = true;
     if(saveOrUpdate === 0){
       this.employees.push(this.employee);
     }
@@ -155,6 +159,7 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
         return emp;
       })
     }
+
     this.closeModal(modal);
     this.toastrService.success('Successful!', 'success');
   }
