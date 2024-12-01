@@ -6,4 +6,8 @@ import { Injectable } from '@angular/core';
 export class EmployeeService {
 
   constructor() { }
+
+  showEmpLogs(msg: string) {
+    console.log("Employee Service: " + msg);  
+  }
 }

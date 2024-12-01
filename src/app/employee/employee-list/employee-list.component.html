@@ -239,4 +239,9 @@
         (click)="modal.close('Close click')">Cancel</button>
     </div>
   </ng-template>
+  <div width="250px" class="container bg-white p-4 mt-4 rounded mx-auto">
+    <label class="row-form-label pr-2" for="testingBox" >Testing Input Area:&nbsp;</label>
+    <input class="form-control" type="text" [(ngModel)]="testingInputBox"/>
+  </div>
+  <app-sub-employee-list (myData)="childData($event)" [childInputBox] = "testingInputBox"></app-sub-employee-list>
 </div>

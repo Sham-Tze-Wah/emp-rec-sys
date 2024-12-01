@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild, ViewChildren, QueryList, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { EmployeeModel } from '../employee-list/employee-list.model';
 import {EMPLOYEES} from '../mock/mock-employee-list';
 import { MasterDataModel } from 'src/app/master-data/master-data.model';
@@ -8,16 +8,21 @@ import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatePipe } from 'src/app/shared/custom-date.pipe';
 import {NgForm, NgModel} from '@angular/forms';
+import { EmployeeService } from '../employee.service';
+import { SubEmployeeListComponent } from '../sub-employee-list/sub-employee-list.component';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css']
+  styleUrls: ['./employee-list.component.css'],
+  providers: [EmployeeService]
 })
 export class EmployeeListComponent implements OnInit, AfterViewInit{
 
   @Input() hobbyChkboxDirtyTouched : boolean = false;
   @Input() genderRadioDirtyTouched: boolean = false;
+  testingInputBox: string = "";
+  @ViewChild(SubEmployeeListComponent) childComponent!: SubEmployeeListComponent;
   @ViewChild("positionRef") positionRef?: NgModel;
   @ViewChild('genderRadio') genderRadio?: NgModel;
 
@@ -45,15 +50,17 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
   constructor(
     private modalService: NgbModal,
     private toastrService: ToastrService,
+    private employeeService: EmployeeService
     ) {
     
    }
 
   ngOnInit(): void {
-    
+    this.employeeService.showEmpLogs("ng On Init from employee list UI");
   }
 
   ngAfterViewInit() {
+    this.childComponent.myData.emit("Triggered from View Child");
   }
 
   onlyNumber(event: any){
@@ -201,5 +208,9 @@ export class EmployeeListComponent implements OnInit, AfterViewInit{
   checkEmptyValue(ngModelRef?: NgModel){
     return ngModelRef!!.invalid;
     // return ngModelRef?.value === null || ngModelRef?.value === undefined || ngModelRef?.value === '';
+  }
+
+  childData(event: any) {
+    this.employeeService.showEmpLogs("Showing your child component msg: " + event);
   }
 }

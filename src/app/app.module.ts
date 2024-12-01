@@ -12,7 +12,6 @@ import { CustomDatePipe } from './shared/custom-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    EmployeeListComponent,
     CustomDatePipe
   ],
   imports: [
